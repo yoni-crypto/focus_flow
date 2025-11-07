@@ -27,7 +27,13 @@ export async function getMoneyEntries(date?: string, month?: string) {
   if (date) {
     query = query.eq('date', date)
   } else if (month) {
-    query = query.gte('date', `${month}-01`).lt('date', `${month}-32`)
+    // Calculate the first day of the month and first day of next month for proper filtering
+    const startDate = `${month}-01`
+    // Get the next month for end date
+    const [year, monthNum] = month.split('-').map(Number)
+    const nextMonth = monthNum === 12 ? `${year + 1}-01` : `${year}-${String(monthNum + 1).padStart(2, '0')}`
+    const endDate = `${nextMonth}-01`
+    query = query.gte('date', startDate).lt('date', endDate)
   }
 
   const { data, error } = await query
@@ -62,7 +68,7 @@ export async function createMoneyEntry(entry: Omit<MoneyEntryInsert, 'user_id'>)
     return { data: null, error: error.message }
   }
 
-  revalidatePath('/dashboard')
+  revalidatePath('/dashboard/money')
   return { data: data as MoneyEntry, error: null }
 }
 
@@ -88,7 +94,7 @@ export async function updateMoneyEntry(id: string, updates: MoneyEntryUpdate) {
     return { data: null, error: error.message }
   }
 
-  revalidatePath('/dashboard')
+  revalidatePath('/dashboard/money')
   return { data: data as MoneyEntry, error: null }
 }
 
@@ -112,7 +118,7 @@ export async function deleteMoneyEntry(id: string) {
     return { error: error.message }
   }
 
-  revalidatePath('/dashboard')
+  revalidatePath('/dashboard/money')
   return { error: null }
 }
 
@@ -128,12 +134,18 @@ export async function getMoneyStats(month?: string) {
 
   const targetMonth = month || new Date().toISOString().slice(0, 7)
 
+  // Calculate the first day of the month and first day of next month for proper filtering
+  const startDate = `${targetMonth}-01`
+  const [year, monthNum] = targetMonth.split('-').map(Number)
+  const nextMonth = monthNum === 12 ? `${year + 1}-01` : `${year}-${String(monthNum + 1).padStart(2, '0')}`
+  const endDate = `${nextMonth}-01`
+
   const { data: entries } = await supabase
     .from('money_entries')
     .select('type, amount, date')
     .eq('user_id', user.id)
-    .gte('date', `${targetMonth}-01`)
-    .lt('date', `${targetMonth}-32`)
+    .gte('date', startDate)
+    .lt('date', endDate)
 
   if (!entries) {
     return {

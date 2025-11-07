@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { createMoneyEntry, updateMoneyEntry, deleteMoneyEntry } from '@/app/actions/money'
 import { MoneyStats } from './money-stats'
@@ -34,17 +34,34 @@ export function MoneyTracker({
   const [stats, setStats] = useState(initialStats)
   const [selectedMonth, setSelectedMonth] = useState(initialMonth)
   const [showForm, setShowForm] = useState(false)
+  const isInitialMount = useRef(true)
 
+  // Update from server when month changes or when server data changes
   useEffect(() => {
+    // On initial mount, just initialize
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      setEntries(initialEntries)
+      setStats(initialStats)
+      setSelectedMonth(initialMonth)
+      return
+    }
+
+    // Always update from server when initialEntries/initialStats change
+    // This ensures we get the latest data after refresh
+    if (selectedMonth !== initialMonth) {
+      // Month changed in URL
+      setSelectedMonth(initialMonth)
+    }
+    
+    // Always sync with server data (server is source of truth)
     setEntries(initialEntries)
     setStats(initialStats)
-    setSelectedMonth(initialMonth)
-  }, [initialEntries, initialStats, initialMonth])
+  }, [initialEntries, initialStats, initialMonth, selectedMonth])
 
   function updateMonth(newMonth: string) {
     setSelectedMonth(newMonth)
     router.push(`${pathname}?month=${newMonth}`)
-    router.refresh()
   }
 
   async function handleCreateEntry(entry: {
@@ -61,10 +78,21 @@ export function MoneyTracker({
     }
 
     if (data) {
-      setEntries([data, ...entries])
-      updateStats(data)
       setShowForm(false)
-      router.refresh()
+      // Only add to state if the entry's month matches the selected month
+      const entryMonth = data.date.slice(0, 7)
+      if (entryMonth === selectedMonth) {
+        // Optimistically update UI immediately
+        setEntries([data, ...entries])
+        updateStats(data)
+        // Refresh after a short delay to ensure DB commit is complete
+        setTimeout(() => {
+          router.refresh()
+        }, 100)
+      } else {
+        // Entry is in different month, just refresh to update stats
+        router.refresh()
+      }
     }
 
     return { error: null }
@@ -79,7 +107,17 @@ export function MoneyTracker({
     }
 
     if (data) {
+      // Optimistically update UI
       setEntries(entries.map((e) => (e.id === id ? data : e)))
+      // Update stats if amount or type changed
+      const oldEntry = entries.find(e => e.id === id)
+      if (oldEntry) {
+        // Remove old entry's stats
+        updateStats(oldEntry, true)
+        // Add new entry's stats
+        updateStats(data, false)
+      }
+      // Refresh to sync with server
       router.refresh()
     }
 
@@ -95,10 +133,12 @@ export function MoneyTracker({
       return { error }
     }
 
+    // Optimistically update UI
     setEntries(entries.filter((e) => e.id !== id))
     if (entry) {
       updateStats(entry, true)
     }
+    // Refresh to sync with server
     router.refresh()
 
     return { error: null }
