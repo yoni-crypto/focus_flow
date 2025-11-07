@@ -63,7 +63,7 @@ export interface Database {
           id: string
           user_id: string
           start: string
-          end: string | null
+          end_time: string | null
           duration_minutes: number | null
           created_at: string
         }
@@ -71,7 +71,7 @@ export interface Database {
           id?: string
           user_id: string
           start: string
-          end?: string | null
+          end_time?: string | null
           duration_minutes?: number | null
           created_at?: string
         }
@@ -79,7 +79,7 @@ export interface Database {
           id?: string
           user_id?: string
           start?: string
-          end?: string | null
+          end_time?: string | null
           duration_minutes?: number | null
           created_at?: string
         }

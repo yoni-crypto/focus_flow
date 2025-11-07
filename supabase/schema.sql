@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS public.focus_sessions (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
   start TIMESTAMPTZ NOT NULL,
-  end TIMESTAMPTZ,
+  end_time TIMESTAMPTZ,
   duration_minutes INTEGER,
   created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
