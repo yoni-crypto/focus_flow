@@ -35,7 +35,7 @@ export default async function MoneyPage({
           </Container>
         </div>
 
-        <Container className="py-6">
+        <Container className="py-6 pb-24 md:pb-6">
           <MoneyTracker
             initialEntries={entries || []}
             initialStats={stats || { totalSpent: 0, totalSaved: 0, net: 0 }}

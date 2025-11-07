@@ -26,7 +26,7 @@ export default async function FocusPage() {
           </Container>
         </div>
 
-        <Container className="py-6">
+        <Container className="py-6 pb-24 md:pb-6">
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <FocusTimer />

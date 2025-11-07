@@ -154,4 +154,20 @@
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-ring;
   }
+  
+  /* Tablet and desktop improvements */
+  @media (min-width: 768px) {
+    /* Improve touch targets on tablets */
+    button, a {
+      min-height: 44px;
+    }
+  }
+  
+  /* Safe area insets for mobile devices */
+  @supports (padding: max(0px)) {
+    body {
+      padding-left: max(0px, env(safe-area-inset-left));
+      padding-right: max(0px, env(safe-area-inset-right));
+    }
+  }
 }

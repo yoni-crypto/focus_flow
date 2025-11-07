@@ -6,7 +6,8 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
-  "orientation": "portrait-primary",
+  "orientation": "any",
+  "categories": ["productivity", "finance", "lifestyle"],
   "icons": [
     {
       "src": "/icons/icon-72x72.png",

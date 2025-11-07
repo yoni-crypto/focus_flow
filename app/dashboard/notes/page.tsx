@@ -40,7 +40,7 @@ export default async function NotesPage({
           </Container>
         </div>
 
-        <Container className="py-6">
+        <Container className="py-6 pb-24 md:pb-6">
           <NotesView
             initialNotes={notes || []}
             initialArchived={showArchived}

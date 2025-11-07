@@ -34,7 +34,7 @@ export default async function TasksPage({
           </Container>
         </div>
 
-        <Container className="py-6">
+        <Container className="py-6 pb-24 md:pb-6">
           <TasksView initialTasks={initialTasks || []} initialDate={selectedDate} />
         </Container>
       </div>
