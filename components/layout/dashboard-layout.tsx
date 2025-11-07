@@ -3,9 +3,9 @@ import { SidebarNav } from './sidebar-nav'
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-black">
       <SidebarNav />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0 md:ml-60">
         {children}
         <BottomNav />
         {/* Add padding to prevent content from being hidden behind bottom nav on mobile */}
@@ -19,4 +19,3 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     </div>
   )
 }
-

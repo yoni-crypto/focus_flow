@@ -3,7 +3,6 @@ import { getSession } from '@/app/actions/auth'
 import { AuthGuard } from '@/components/auth/auth-guard'
 import { FocusTimer } from '@/components/focus/focus-timer'
 import { FocusHistory } from '@/components/focus/focus-history'
-import { Container } from '@/components/ui/container'
 
 export default async function FocusPage() {
   const session = await getSession()
@@ -14,20 +13,21 @@ export default async function FocusPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-background">
-        <div className="border-b border-border">
-          <Container>
-            <div className="py-4">
-              <h1 className="text-2xl font-semibold tracking-tight">Focus Timer</h1>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                Pomodoro timer for focused work sessions
-              </p>
+      <div className="min-h-screen bg-black">
+        {/* Clean Header */}
+        <div className="border-b border-gray-800/50 bg-black sticky top-0 z-10">
+          <div className="px-6 py-5">
+            <div className="flex items-center h-full">
+              <div>
+                <h1 className="text-lg font-semibold text-white leading-none">Focus Timer</h1>
+              </div>
             </div>
-          </Container>
+          </div>
         </div>
 
-        <Container className="py-6 pb-24 md:pb-6">
-          <div className="grid gap-6 lg:grid-cols-3">
+        {/* Content */}
+        <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pb-24 md:pb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             <div className="lg:col-span-2">
               <FocusTimer />
             </div>
@@ -35,9 +35,8 @@ export default async function FocusPage() {
               <FocusHistory />
             </div>
           </div>
-        </Container>
+        </div>
       </div>
     </AuthGuard>
   )
 }
-

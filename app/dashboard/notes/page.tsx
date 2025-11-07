@@ -3,7 +3,6 @@ import { getSession } from '@/app/actions/auth'
 import { getNotes } from '@/app/actions/notes'
 import { AuthGuard } from '@/components/auth/auth-guard'
 import { NotesView } from '@/components/notes/notes-view'
-import { Container } from '@/components/ui/container'
 
 export default async function NotesPage({
   searchParams,
@@ -28,27 +27,27 @@ export default async function NotesPage({
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-background">
-        <div className="border-b border-border">
-          <Container>
-            <div className="py-4">
-              <h1 className="text-2xl font-semibold tracking-tight">Notes</h1>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                Quick notes and ideas
-              </p>
+      <div className="min-h-screen bg-black">
+        {/* Clean Header */}
+        <div className="border-b border-gray-800/50 bg-black sticky top-0 z-10">
+          <div className="px-6 py-5">
+            <div className="flex items-center h-full">
+              <div>
+                <h1 className="text-lg font-semibold text-white leading-none">Notes</h1>
+              </div>
             </div>
-          </Container>
+          </div>
         </div>
 
-        <Container className="py-6 pb-24 md:pb-6">
+        {/* Content */}
+        <div className="px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-24 md:pb-8">
           <NotesView
             initialNotes={notes || []}
             initialArchived={showArchived}
             initialSearch={searchQuery}
           />
-        </Container>
+        </div>
       </div>
     </AuthGuard>
   )
 }
-

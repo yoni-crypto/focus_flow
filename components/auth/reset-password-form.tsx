@@ -31,14 +31,17 @@ export function ResetPasswordForm() {
 
   if (success) {
     return (
-      <div className="space-y-4">
-        <div className="rounded-lg border border-border bg-muted/50 p-4 text-center">
-          <p className="text-sm text-foreground">
+      <div className="space-y-6">
+        <div className="rounded-lg border border-green-500/50 bg-green-500/10 p-4 text-center">
+          <p className="text-sm text-green-400">
             Check your email for a password reset link.
           </p>
         </div>
         <Link href="/auth/login">
-          <Button variant="outline" className="w-full">
+          <Button 
+            variant="outline" 
+            className="w-full h-12 bg-gray-900/50 border-gray-800 text-white hover:bg-gray-900 hover:border-gray-700 rounded-lg font-medium"
+          >
             Back to sign in
           </Button>
         </Link>
@@ -47,40 +50,48 @@ export function ResetPasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          disabled={loading}
-        />
-      </div>
-
-      {error && (
-        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
-          {error}
+    <div className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-white text-sm font-medium">
+            Email
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={loading}
+            className="bg-gray-900/50 border-gray-800 text-white placeholder:text-gray-500 focus:border-gray-700 focus:ring-gray-700 h-12 rounded-lg"
+          />
         </div>
-      )}
 
-      <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? 'Sending...' : 'Send reset link'}
-      </Button>
+        {error && (
+          <div className="rounded-lg border border-red-500/50 bg-red-500/10 p-3 text-sm text-red-400">
+            {error}
+          </div>
+        )}
 
-      <p className="text-center text-sm text-muted-foreground">
+        <Button 
+          type="submit" 
+          className="w-full h-12 bg-gray-200 text-black hover:bg-gray-300 font-medium rounded-lg transition-colors" 
+          disabled={loading}
+        >
+          {loading ? 'Sending...' : 'Send Reset Link'}
+        </Button>
+      </form>
+
+      <p className="text-center text-sm text-gray-400">
         Remember your password?{' '}
         <Link
           href="/auth/login"
-          className="font-medium text-foreground hover:underline"
+          className="text-white hover:underline font-medium"
         >
-          Sign in
+          Sign in here
         </Link>
       </p>
-    </form>
+    </div>
   )
 }
-

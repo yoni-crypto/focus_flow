@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { BackgroundImage } from '@/components/ui/background-image'
 import type { Database } from '@/lib/supabase/types'
 
 type MoneyEntry = Database['public']['Tables']['money_entries']['Row']
@@ -49,33 +50,37 @@ export function MoneyChart({ entries }: MoneyChartProps) {
   )
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">Spending by Category</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {chartData.spend.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No spending data</p>
-        ) : (
-          <div className="space-y-4">
-            {chartData.spend.map((item) => (
-              <div key={item.category} className="space-y-1">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-medium">{item.category}</span>
-                  <span className="text-muted-foreground">${item.amount.toFixed(2)}</span>
+    <Card className="bg-gray-900/30 border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
+      <BackgroundImage src="/images/savings-bg.jpg" alt="Savings background" opacity={20} />
+      <div className="relative z-10">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-white">Spending by Category</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {chartData.spend.length === 0 ? (
+            <div className="py-8 text-center">
+              <p className="text-sm text-gray-400">No spending data</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {chartData.spend.map((item) => (
+                <div key={item.category} className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium text-white">{item.category}</span>
+                    <span className="text-gray-400">${item.amount.toFixed(2)}</span>
+                  </div>
+                  <div className="h-2 w-full bg-gray-800/50 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-red-500 transition-all duration-500"
+                      style={{ width: `${(item.amount / maxAmount) * 100}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-foreground transition-all"
-                    style={{ width: `${(item.amount / maxAmount) * 100}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </CardContent>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </div>
     </Card>
   )
 }
-

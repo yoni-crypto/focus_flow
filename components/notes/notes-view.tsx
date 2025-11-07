@@ -7,6 +7,13 @@ import { NotesGrid } from './notes-grid'
 import { NotesForm } from './notes-form'
 import { NotesSearch } from './notes-search'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { BackgroundImage } from '@/components/ui/background-image'
 import { Plus } from 'lucide-react'
 import type { Database } from '@/lib/supabase/types'
 
@@ -105,6 +112,7 @@ export function NotesView({
     if (data) {
       setNotes(notes.map((n) => (n.id === id ? data : n)))
       setEditingNote(null)
+      setShowForm(false)
       router.refresh()
     }
 
@@ -147,11 +155,21 @@ export function NotesView({
             variant={showArchived ? 'default' : 'outline'}
             size="sm"
             onClick={toggleArchived}
+            className={showArchived 
+              ? "bg-gray-200 text-black hover:bg-gray-300" 
+              : "bg-gray-900/50 border-gray-800 text-white hover:bg-gray-900 hover:border-gray-700"
+            }
           >
             {showArchived ? 'Active Notes' : 'Archived Notes'}
           </Button>
         </div>
-        <Button onClick={() => setShowForm(true)}>
+        <Button 
+          onClick={() => {
+            setEditingNote(null)
+            setShowForm(true)
+          }}
+          className="bg-gray-200 text-black hover:bg-gray-300"
+        >
           <Plus className="h-4 w-4 mr-2" />
           New Note
         </Button>
@@ -159,13 +177,24 @@ export function NotesView({
 
       {!showArchived && <NotesSearch onSearch={handleSearch} initialQuery={searchQuery} />}
 
-      {showForm && (
-        <NotesForm
-          note={editingNote || undefined}
-          onSubmit={editingNote ? (data) => handleUpdateNote(editingNote.id, data) : handleCreateNote}
-          onCancel={handleCancel}
-        />
-      )}
+      {/* Modal for Notes Form */}
+      <Dialog open={showForm} onOpenChange={setShowForm}>
+        <DialogContent className="bg-gray-900/95 border-gray-800 backdrop-blur-xl max-w-2xl p-0 overflow-hidden relative">
+          {/* Background Image */}
+          <BackgroundImage src="/images/notes-bg.jpg" alt="Notes background" opacity={20} />
+          
+          <div className="relative z-10 p-6">
+            <DialogHeader>
+              <DialogTitle>{editingNote ? 'Edit Note' : 'Create New Note'}</DialogTitle>
+            </DialogHeader>
+            <NotesForm
+              note={editingNote || undefined}
+              onSubmit={editingNote ? (data) => handleUpdateNote(editingNote.id, data) : handleCreateNote}
+              onCancel={handleCancel}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {showArchived ? (
         <NotesGrid
@@ -179,7 +208,7 @@ export function NotesView({
         <>
           {pinnedNotes.length > 0 && (
             <div className="space-y-4">
-              <h2 className="text-lg font-semibold">Pinned</h2>
+              <h2 className="text-lg font-semibold text-white">Pinned</h2>
               <NotesGrid
                 notes={pinnedNotes}
                 onEdit={handleEdit}
@@ -191,7 +220,7 @@ export function NotesView({
           )}
           {unpinnedNotes.length > 0 && (
             <div className="space-y-4">
-              {pinnedNotes.length > 0 && <h2 className="text-lg font-semibold">All Notes</h2>}
+              {pinnedNotes.length > 0 && <h2 className="text-lg font-semibold text-white">All Notes</h2>}
               <NotesGrid
                 notes={unpinnedNotes}
                 onEdit={handleEdit}
@@ -203,7 +232,7 @@ export function NotesView({
           )}
           {filteredNotes.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-400">
                 {searchQuery ? 'No notes found' : 'No notes yet'}
               </p>
             </div>
@@ -213,4 +242,3 @@ export function NotesView({
     </div>
   )
 }
-

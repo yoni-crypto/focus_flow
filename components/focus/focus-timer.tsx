@@ -3,10 +3,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createFocusSession, updateFocusSession } from '@/app/actions/focus'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Play, Pause, Square, RotateCcw } from 'lucide-react'
+import { Play, Pause, RotateCcw, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { BackgroundImage } from '@/components/ui/background-image'
 
 const POMODORO_DURATION = 25 * 60 // 25 minutes in seconds
 const SHORT_BREAK = 5 * 60 // 5 minutes in seconds
@@ -148,119 +149,137 @@ export function FocusTimer() {
   const totalDuration = getDurationForMode(mode)
   const progress = totalDuration > 0 ? ((totalDuration - seconds) / totalDuration) * 100 : 0
 
+  const modeColors = {
+    focus: 'from-orange-500/20 to-red-500/20 border-orange-500/30',
+    shortBreak: 'from-blue-500/20 to-cyan-500/20 border-blue-500/30',
+    longBreak: 'from-green-500/20 to-emerald-500/20 border-green-500/30',
+  }
+
   return (
-    <div className="space-y-6">
-      {/* Timer Display */}
-      <Card className="overflow-hidden">
-        <CardContent className="p-8">
-          <div className="flex flex-col items-center justify-center space-y-8">
-            {/* Mode Selector */}
-            <div className="flex gap-2 rounded-lg border border-border p-1">
-              <Button
-                variant={mode === 'focus' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => switchMode('focus')}
-                disabled={isRunning}
-              >
-                Focus
-              </Button>
-              <Button
-                variant={mode === 'shortBreak' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => switchMode('shortBreak')}
-                disabled={isRunning}
-              >
-                Short Break
-              </Button>
-              <Button
-                variant={mode === 'longBreak' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => switchMode('longBreak')}
-                disabled={isRunning}
-              >
-                Long Break
-              </Button>
-            </div>
-
-            {/* Timer Display */}
-            <div className="flex flex-col items-center justify-center space-y-4">
-              <div className={cn(
-                'text-7xl md:text-8xl font-semibold tracking-tight font-mono',
-                seconds === 0 && 'text-destructive',
-                isRunning && 'animate-pulse'
-              )}>
-                {formatTime(seconds)}
-              </div>
-              <div className="text-center space-y-1">
-                <p className="text-sm font-medium capitalize">
-                  {mode === 'focus' ? 'Focus Time' : mode === 'shortBreak' ? 'Short Break' : 'Long Break'}
-                </p>
-                {progress > 0 && (
-                  <div className="flex items-center gap-2 justify-center">
-                    <div className="h-1 w-32 bg-muted rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-foreground transition-all duration-1000"
-                        style={{ width: `${progress}%` }}
-                      />
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {Math.round(progress)}%
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Controls */}
-            <div className="flex gap-3">
-              {!isRunning ? (
-                <Button
-                  size="lg"
-                  onClick={handleStart}
-                  className="gap-2"
-                >
-                  <Play className="h-5 w-5" />
-                  Start
-                </Button>
-              ) : (
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={handlePause}
-                  className="gap-2"
-                >
-                  <Pause className="h-5 w-5" />
-                  Pause
-                </Button>
+    <Card className="bg-gray-900/30 border-gray-800/50 backdrop-blur-sm relative overflow-hidden min-h-[600px]">
+      {/* Background Image */}
+      <BackgroundImage src="/images/focus-bg.jpg" alt="Focus background" opacity={15} />
+      
+      <div className="relative z-10 p-8 lg:p-12">
+        <div className="flex flex-col items-center justify-center space-y-8">
+          {/* Mode Selector */}
+          <div className="flex gap-2 rounded-xl border border-gray-800/50 bg-gray-900/30 p-1.5 backdrop-blur-sm">
+            <Button
+              variant={mode === 'focus' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => switchMode('focus')}
+              disabled={isRunning}
+              className={cn(
+                'h-9 px-4 rounded-lg transition-all duration-200',
+                mode === 'focus'
+                  ? 'bg-gray-200 text-black hover:bg-gray-300'
+                  : 'text-gray-400 hover:text-white hover:bg-transparent'
               )}
+            >
+              <Zap className="h-4 w-4 mr-2" />
+              Focus
+            </Button>
+            <Button
+              variant={mode === 'shortBreak' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => switchMode('shortBreak')}
+              disabled={isRunning}
+              className={cn(
+                'h-9 px-4 rounded-lg transition-all duration-200',
+                mode === 'shortBreak'
+                  ? 'bg-gray-200 text-black hover:bg-gray-300'
+                  : 'text-gray-400 hover:text-white hover:bg-transparent'
+              )}
+            >
+              Short Break
+            </Button>
+            <Button
+              variant={mode === 'longBreak' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => switchMode('longBreak')}
+              disabled={isRunning}
+              className={cn(
+                'h-9 px-4 rounded-lg transition-all duration-200',
+                mode === 'longBreak'
+                  ? 'bg-gray-200 text-black hover:bg-gray-300'
+                  : 'text-gray-400 hover:text-white hover:bg-transparent'
+              )}
+            >
+              Long Break
+            </Button>
+          </div>
+
+          {/* Timer Display */}
+          <div className="flex flex-col items-center justify-center space-y-6 w-full">
+            <div className={cn(
+              'text-8xl md:text-9xl font-bold tracking-tight font-mono text-white',
+              seconds === 0 && 'text-red-500',
+              isRunning && 'animate-pulse'
+            )}>
+              {formatTime(seconds)}
+            </div>
+            
+            <div className="text-center space-y-3 w-full max-w-md">
+              <p className="text-lg font-medium text-gray-300 capitalize">
+                {mode === 'focus' ? 'Focus Time' : mode === 'shortBreak' ? 'Short Break' : 'Long Break'}
+              </p>
+              
+              {/* Progress Bar */}
+              {progress > 0 && (
+                <div className="space-y-2">
+                  <div className="h-2 w-full bg-gray-800/50 rounded-full overflow-hidden backdrop-blur-sm">
+                    <div 
+                      className={cn(
+                        'h-full transition-all duration-1000 rounded-full',
+                        mode === 'focus' && 'bg-gradient-to-r from-orange-500 to-red-500',
+                        mode === 'shortBreak' && 'bg-gradient-to-r from-blue-500 to-cyan-500',
+                        mode === 'longBreak' && 'bg-gradient-to-r from-green-500 to-emerald-500'
+                      )}
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                  <p className="text-sm text-gray-400">
+                    {Math.round(progress)}% complete
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div className="flex gap-3 pt-4">
+            {!isRunning ? (
+              <Button
+                size="lg"
+                onClick={handleStart}
+                className="gap-2 bg-gray-200 text-black hover:bg-gray-300 h-12 px-8 rounded-lg font-medium"
+              >
+                <Play className="h-5 w-5" />
+                Start
+              </Button>
+            ) : (
               <Button
                 size="lg"
                 variant="outline"
-                onClick={handleReset}
-                className="gap-2"
+                onClick={handlePause}
+                className="gap-2 bg-gray-900/50 border-gray-800 text-white hover:bg-gray-900 hover:border-gray-700 h-12 px-8 rounded-lg font-medium"
               >
-                <RotateCcw className="h-5 w-5" />
-                Reset
+                <Pause className="h-5 w-5" />
+                Pause
               </Button>
-            </div>
+            )}
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={handleReset}
+              className="gap-2 bg-gray-900/50 border-gray-800 text-white hover:bg-gray-900 hover:border-gray-700 h-12 px-8 rounded-lg font-medium"
+            >
+              <RotateCcw className="h-5 w-5" />
+              Reset
+            </Button>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Session Info */}
-      {sessionId && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Active Session</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Session started at {sessionStartTime?.toLocaleTimeString()}
-            </p>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+        </div>
+      </div>
+    </Card>
   )
 }
-

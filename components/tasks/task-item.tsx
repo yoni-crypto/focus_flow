@@ -30,9 +30,9 @@ export function TaskItem({
   const [touchStart, setTouchStart] = useState(0)
 
   const priorityColors = {
-    low: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-    medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
-    high: 'bg-destructive/10 text-destructive',
+    low: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    medium: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+    high: 'bg-red-500/20 text-red-400 border-red-500/30',
   }
 
   async function handleToggleComplete() {
@@ -87,7 +87,7 @@ export function TaskItem({
   return (
     <div
       className={cn(
-        'relative rounded-lg border border-border bg-card transition-all duration-200',
+        'relative rounded-lg border border-gray-800/50 bg-gray-900/30 backdrop-blur-sm transition-all duration-200 hover:bg-gray-900/40 hover:border-gray-700/50',
         draggedTask === task.id && 'opacity-50',
         task.completed && 'opacity-60'
       )}
@@ -101,22 +101,22 @@ export function TaskItem({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex items-center gap-3 p-3">
+      <div className="flex items-center gap-3 p-4">
         {/* Drag handle (desktop) */}
-        <div className="hidden md:block cursor-move text-muted-foreground hover:text-foreground">
+        <div className="hidden md:block cursor-move text-gray-500 hover:text-gray-300 transition-colors">
           <GripVertical className="h-4 w-4" />
         </div>
 
         {/* Checkbox */}
         <button
           onClick={handleToggleComplete}
-          className="shrink-0 focus:outline-none focus:ring-2 focus:ring-ring rounded"
+          className="shrink-0 focus:outline-none focus:ring-2 focus:ring-gray-700 rounded transition-colors"
           aria-label={task.completed ? 'Mark as incomplete' : 'Mark as complete'}
         >
           {task.completed ? (
-            <CheckCircle2 className="h-5 w-5 text-green-600" />
+            <CheckCircle2 className="h-5 w-5 text-green-500" />
           ) : (
-            <Circle className="h-5 w-5 text-muted-foreground hover:text-foreground" />
+            <Circle className="h-5 w-5 text-gray-500 hover:text-white transition-colors" />
           )}
         </button>
 
@@ -124,14 +124,14 @@ export function TaskItem({
         <div className="flex-1 min-w-0">
           <p
             className={cn(
-              'text-sm font-medium',
-              task.completed && 'line-through text-muted-foreground'
+              'text-sm font-medium text-white',
+              task.completed && 'line-through text-gray-500'
             )}
           >
             {task.title}
           </p>
           {task.due_time && (
-            <p className="text-xs text-muted-foreground mt-0.5">{task.due_time}</p>
+            <p className="text-xs text-gray-400 mt-1">{task.due_time}</p>
           )}
         </div>
 
@@ -139,7 +139,7 @@ export function TaskItem({
         {task.priority !== 'medium' && (
           <span
             className={cn(
-              'shrink-0 rounded-full px-2 py-0.5 text-xs font-medium',
+              'shrink-0 rounded-full px-2.5 py-1 text-xs font-medium border',
               priorityColors[task.priority]
             )}
           >
@@ -151,7 +151,7 @@ export function TaskItem({
         <Button
           variant="ghost"
           size="icon"
-          className="hidden md:flex h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+          className="hidden md:flex h-8 w-8 shrink-0 text-gray-400 hover:text-red-400 hover:bg-red-500/10"
           onClick={handleDelete}
         >
           <Trash2 className="h-4 w-4" />
@@ -160,11 +160,10 @@ export function TaskItem({
 
       {/* Swipe delete indicator (mobile) */}
       {swipeOffset < -30 && (
-        <div className="absolute right-0 top-0 bottom-0 flex items-center justify-end pr-4 bg-destructive/10">
-          <Trash2 className="h-5 w-5 text-destructive" />
+        <div className="absolute right-0 top-0 bottom-0 flex items-center justify-end pr-4 bg-red-500/10">
+          <Trash2 className="h-5 w-5 text-red-400" />
         </div>
       )}
     </div>
   )
 }
-

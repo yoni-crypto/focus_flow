@@ -3,6 +3,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Pin, PinOff, Archive, ArchiveRestore, Trash2, Edit2 } from 'lucide-react'
+import { BackgroundImage } from '@/components/ui/background-image'
 import { cn } from '@/lib/utils'
 import type { Database } from '@/lib/supabase/types'
 
@@ -29,20 +30,24 @@ export function NoteCard({
   return (
     <Card
       className={cn(
-        'relative group hover:shadow-sm transition-shadow cursor-pointer',
-        isPinned && 'border-primary'
+        'relative group hover:shadow-lg transition-all duration-200 cursor-pointer overflow-hidden',
+        'bg-gray-900/30 border-gray-800/50 backdrop-blur-sm',
+        isPinned && 'border-yellow-500/50'
       )}
       onClick={onEdit}
     >
-      <CardContent className="p-4">
+      {/* Background Image */}
+      <BackgroundImage src="/images/notes-bg.jpg" alt="Notes background" opacity={15} />
+      
+      <CardContent className="p-4 relative z-10">
         <div className="space-y-2">
           <div className="flex items-start justify-between gap-2">
-            <h3 className="font-semibold text-sm line-clamp-2 flex-1">{note.title}</h3>
-            {isPinned && <Pin className="h-4 w-4 text-primary shrink-0" />}
+            <h3 className="font-semibold text-sm line-clamp-2 flex-1 text-white">{note.title}</h3>
+            {isPinned && <Pin className="h-4 w-4 text-yellow-400 shrink-0" fill="currentColor" />}
           </div>
-          <p className="text-sm text-muted-foreground line-clamp-4">{note.content}</p>
+          <p className="text-sm text-gray-300 line-clamp-4">{note.content}</p>
           <div className="flex items-center justify-between pt-2">
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-gray-400">
               {new Date(note.updated_at || note.created_at).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
@@ -55,7 +60,7 @@ export function NoteCard({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7"
+                className="h-7 w-7 text-gray-400 hover:text-yellow-400 hover:bg-yellow-500/10"
                 onClick={() => onTogglePin(!isPinned)}
                 title={isPinned ? 'Unpin' : 'Pin'}
               >
@@ -68,7 +73,7 @@ export function NoteCard({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7"
+                className="h-7 w-7 text-gray-400 hover:text-white hover:bg-gray-900/50"
                 onClick={() => onToggleArchive(!isArchived)}
                 title={isArchived ? 'Unarchive' : 'Archive'}
               >
@@ -81,7 +86,7 @@ export function NoteCard({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7 text-destructive hover:text-destructive"
+                className="h-7 w-7 text-gray-400 hover:text-red-400 hover:bg-red-500/10"
                 onClick={onDelete}
                 title="Delete"
               >
@@ -94,4 +99,3 @@ export function NoteCard({
     </Card>
   )
 }
-

@@ -11,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Card } from '@/components/ui/card'
 
 interface TaskFormProps {
   date: string
@@ -65,64 +64,83 @@ export function TaskForm({ date, onSubmit, onCancel, initialTask }: TaskFormProp
   }
 
   return (
-    <Card className="p-4">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="title" className="text-white text-sm font-medium">
+          Task Title
+        </Label>
+        <Input
+          id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Enter task title"
+          required
+          disabled={loading}
+          autoFocus
+          className="bg-gray-900/50 border-gray-800 text-white placeholder:text-gray-500 focus:border-gray-700 focus:ring-gray-700 h-10 rounded-lg"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="title">Task Title</Label>
+          <Label htmlFor="priority" className="text-white text-sm font-medium">
+            Priority
+          </Label>
+          <Select value={priority} onValueChange={(value: 'low' | 'medium' | 'high') => setPriority(value)}>
+            <SelectTrigger 
+              id="priority" 
+              disabled={loading}
+              className="bg-gray-900/50 border-gray-800 text-white focus:border-gray-700 focus:ring-gray-700 h-10 rounded-lg"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-gray-900 border-gray-800">
+              <SelectItem value="low" className="text-white">Low</SelectItem>
+              <SelectItem value="medium" className="text-white">Medium</SelectItem>
+              <SelectItem value="high" className="text-white">High</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="dueTime" className="text-white text-sm font-medium">
+            Due Time (optional)
+          </Label>
           <Input
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter task title"
-            required
+            id="dueTime"
+            type="time"
+            value={dueTime}
+            onChange={(e) => setDueTime(e.target.value)}
             disabled={loading}
-            autoFocus
+            className="bg-gray-900/50 border-gray-800 text-white focus:border-gray-700 focus:ring-gray-700 h-10 rounded-lg"
           />
         </div>
+      </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="priority">Priority</Label>
-            <Select value={priority} onValueChange={(value: 'low' | 'medium' | 'high') => setPriority(value)}>
-              <SelectTrigger id="priority" disabled={loading}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="dueTime">Due Time (optional)</Label>
-            <Input
-              id="dueTime"
-              type="time"
-              value={dueTime}
-              onChange={(e) => setDueTime(e.target.value)}
-              disabled={loading}
-            />
-          </div>
+      {error && (
+        <div className="rounded-lg border border-red-500/50 bg-red-500/10 p-3 text-sm text-red-400">
+          {error}
         </div>
+      )}
 
-        {error && (
-          <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
-            {error}
-          </div>
-        )}
-
-        <div className="flex gap-2">
-          <Button type="submit" disabled={loading} className="flex-1">
-            {loading ? 'Saving...' : initialTask ? 'Update Task' : 'Create Task'}
-          </Button>
-          <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
-            Cancel
-          </Button>
-        </div>
-      </form>
-    </Card>
+      <div className="flex gap-2 pt-2">
+        <Button 
+          type="submit" 
+          disabled={loading} 
+          className="flex-1 bg-gray-200 text-black hover:bg-gray-300 h-10 rounded-lg"
+        >
+          {loading ? 'Saving...' : initialTask ? 'Update Task' : 'Create Task'}
+        </Button>
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={onCancel} 
+          disabled={loading}
+          className="bg-gray-900/50 border-gray-800 text-white hover:bg-gray-900 hover:border-gray-700 h-10 rounded-lg"
+        >
+          Cancel
+        </Button>
+      </div>
+    </form>
   )
 }
-

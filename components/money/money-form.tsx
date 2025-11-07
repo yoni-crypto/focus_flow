@@ -11,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Card } from '@/components/ui/card'
 
 const CATEGORIES = [
   'Food',
@@ -82,84 +81,109 @@ export function MoneyForm({
   }
 
   return (
-    <Card className="p-4">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="type">Type</Label>
-            <Select value={type} onValueChange={(value: 'spend' | 'save') => setType(value)}>
-              <SelectTrigger id="type" disabled={loading}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="spend">Spend</SelectItem>
-                <SelectItem value="save">Save</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount</Label>
-            <Input
-              id="amount"
-              type="number"
-              step="0.01"
-              min="0"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="0.00"
-              required
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="type" className="text-white text-sm font-medium">
+            Type
+          </Label>
+          <Select value={type} onValueChange={(value: 'spend' | 'save') => setType(value)}>
+            <SelectTrigger 
+              id="type" 
               disabled={loading}
-            />
-          </div>
+              className="bg-gray-900/50 border-gray-800 text-white focus:border-gray-700 focus:ring-gray-700 h-10 rounded-lg"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-gray-900 border-gray-800">
+              <SelectItem value="spend" className="text-white">Spend</SelectItem>
+              <SelectItem value="save" className="text-white">Save</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="category">Category (optional)</Label>
-            <Select value={category || undefined} onValueChange={(value) => setCategory(value || '')}>
-              <SelectTrigger id="category" disabled={loading}>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {CATEGORIES.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="space-y-2">
+          <Label htmlFor="amount" className="text-white text-sm font-medium">
+            Amount
+          </Label>
+          <Input
+            id="amount"
+            type="number"
+            step="0.01"
+            min="0"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="0.00"
+            required
+            disabled={loading}
+            className="bg-gray-900/50 border-gray-800 text-white placeholder:text-gray-500 focus:border-gray-700 focus:ring-gray-700 h-10 rounded-lg"
+          />
+        </div>
+      </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="date">Date</Label>
-            <Input
-              id="date"
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="category" className="text-white text-sm font-medium">
+            Category (optional)
+          </Label>
+          <Select value={category || undefined} onValueChange={(value) => setCategory(value || '')}>
+            <SelectTrigger 
+              id="category" 
               disabled={loading}
-            />
-          </div>
+              className="bg-gray-900/50 border-gray-800 text-white focus:border-gray-700 focus:ring-gray-700 h-10 rounded-lg"
+            >
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent className="bg-gray-900 border-gray-800">
+              {CATEGORIES.map((cat) => (
+                <SelectItem key={cat} value={cat} className="text-white">
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
-        {error && (
-          <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
-            {error}
-          </div>
-        )}
-
-        <div className="flex gap-2">
-          <Button type="submit" disabled={loading} className="flex-1">
-            {loading ? 'Saving...' : initialEntry ? 'Update Entry' : 'Create Entry'}
-          </Button>
-          <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
-            Cancel
-          </Button>
+        <div className="space-y-2">
+          <Label htmlFor="date" className="text-white text-sm font-medium">
+            Date
+          </Label>
+          <Input
+            id="date"
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            disabled={loading}
+            className="bg-gray-900/50 border-gray-800 text-white focus:border-gray-700 focus:ring-gray-700 h-10 rounded-lg"
+          />
         </div>
-      </form>
-    </Card>
+      </div>
+
+      {error && (
+        <div className="rounded-lg border border-red-500/50 bg-red-500/10 p-3 text-sm text-red-400">
+          {error}
+        </div>
+      )}
+
+      <div className="flex gap-2 pt-2">
+        <Button 
+          type="submit" 
+          disabled={loading} 
+          className="flex-1 bg-gray-200 text-black hover:bg-gray-300 h-10 rounded-lg"
+        >
+          {loading ? 'Saving...' : initialEntry ? 'Update Entry' : 'Create Entry'}
+        </Button>
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={onCancel} 
+          disabled={loading}
+          className="bg-gray-900/50 border-gray-800 text-white hover:bg-gray-900 hover:border-gray-700 h-10 rounded-lg"
+        >
+          Cancel
+        </Button>
+      </div>
+    </form>
   )
 }
-

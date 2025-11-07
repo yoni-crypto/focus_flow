@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { TaskItem } from './task-item'
-import { Card } from '@/components/ui/card'
 import type { Database } from '@/lib/supabase/types'
 
 type Task = Database['public']['Tables']['tasks']['Row']
@@ -19,17 +18,17 @@ export function TaskList({ tasks, loading, onUpdate, onDelete }: TaskListProps) 
 
   if (loading) {
     return (
-      <Card className="p-6">
-        <p className="text-sm text-muted-foreground">Loading tasks...</p>
-      </Card>
+      <div className="rounded-lg border border-gray-800/50 bg-gray-900/30 backdrop-blur-sm p-6">
+        <p className="text-sm text-gray-400">Loading tasks...</p>
+      </div>
     )
   }
 
   if (tasks.length === 0) {
     return (
-      <Card className="p-6 text-center">
-        <p className="text-sm text-muted-foreground">No tasks found</p>
-      </Card>
+      <div className="rounded-lg border border-gray-800/50 bg-gray-900/30 backdrop-blur-sm p-12 text-center">
+        <p className="text-sm text-gray-400">No tasks found</p>
+      </div>
     )
   }
 
@@ -39,7 +38,7 @@ export function TaskList({ tasks, loading, onUpdate, onDelete }: TaskListProps) 
   return (
     <div className="space-y-4">
       {pendingTasks.length > 0 && (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {pendingTasks.map((task) => (
             <TaskItem
               key={task.id}
@@ -55,8 +54,8 @@ export function TaskList({ tasks, loading, onUpdate, onDelete }: TaskListProps) 
       )}
 
       {completedTasks.length > 0 && (
-        <div className="space-y-2 pt-4 border-t border-border">
-          <p className="text-sm font-medium text-muted-foreground mb-2">
+        <div className="space-y-3 pt-4 border-t border-gray-800/50">
+          <p className="text-sm font-medium text-gray-400 mb-2">
             Completed ({completedTasks.length})
           </p>
           {completedTasks.map((task) => (
@@ -75,4 +74,3 @@ export function TaskList({ tasks, loading, onUpdate, onDelete }: TaskListProps) 
     </div>
   )
 }
-

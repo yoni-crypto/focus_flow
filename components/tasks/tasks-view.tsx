@@ -7,6 +7,13 @@ import { TaskList } from './task-list'
 import { TaskForm } from './task-form'
 import { TaskFilters } from './task-filters'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { BackgroundImage } from '@/components/ui/background-image'
 import { Plus } from 'lucide-react'
 import type { Database } from '@/lib/supabase/types'
 
@@ -39,7 +46,6 @@ export function TasksView({ initialTasks, initialDate }: TasksViewProps) {
   function updateDate(newDate: string) {
     setSelectedDate(newDate)
     router.push(`${pathname}?date=${newDate}`)
-    router.refresh()
   }
 
   async function handleCreateTask(task: {
@@ -113,10 +119,13 @@ export function TasksView({ initialTasks, initialDate }: TasksViewProps) {
             type="date"
             value={selectedDate}
             onChange={(e) => updateDate(e.target.value)}
-            className="rounded-lg border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-lg border border-gray-800 bg-gray-900/50 text-white placeholder:text-gray-500 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-700 focus-visible:border-gray-700"
           />
         </div>
-        <Button onClick={() => setShowForm(!showForm)}>
+        <Button 
+          onClick={() => setShowForm(true)}
+          className="bg-gray-200 text-black hover:bg-gray-300"
+        >
           <Plus className="h-4 w-4 mr-2" />
           New Task
         </Button>
@@ -129,13 +138,24 @@ export function TasksView({ initialTasks, initialDate }: TasksViewProps) {
         onPriorityFilterChange={setPriorityFilter}
       />
 
-      {showForm && (
-        <TaskForm
-          date={selectedDate}
-          onSubmit={handleCreateTask}
-          onCancel={() => setShowForm(false)}
-        />
-      )}
+      {/* Modal for Task Form */}
+      <Dialog open={showForm} onOpenChange={setShowForm}>
+        <DialogContent className="bg-gray-900/95 border-gray-800 backdrop-blur-xl max-w-md p-0 overflow-hidden relative">
+          {/* Background Image */}
+          <BackgroundImage src="/images/tasks-bg.jpg" alt="Tasks background" opacity={20} />
+          
+          <div className="relative z-10 p-6">
+            <DialogHeader>
+              <DialogTitle>Create New Task</DialogTitle>
+            </DialogHeader>
+            <TaskForm
+              date={selectedDate}
+              onSubmit={handleCreateTask}
+              onCancel={() => setShowForm(false)}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <TaskList
         tasks={filteredTasks}
@@ -146,4 +166,3 @@ export function TasksView({ initialTasks, initialDate }: TasksViewProps) {
     </div>
   )
 }
-
