@@ -22,11 +22,14 @@ export async function getTasks(date?: string) {
     .from('tasks')
     .select('*')
     .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
 
   if (date) {
     query = query.eq('date', date)
   }
+
+  query = query
+    .order('completed', { ascending: true })
+    .order('created_at', { ascending: false })
 
   const { data, error } = await query
 
