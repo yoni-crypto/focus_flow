@@ -117,12 +117,11 @@ export function MoneyForm({
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="category">Category (optional)</Label>
-            <Select value={category} onValueChange={setCategory}>
+            <Select value={category || undefined} onValueChange={(value) => setCategory(value || '')}>
               <SelectTrigger id="category" disabled={loading}>
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
                 {CATEGORIES.map((cat) => (
                   <SelectItem key={cat} value={cat}>
                     {cat}
