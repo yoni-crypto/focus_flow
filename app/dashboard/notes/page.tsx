@@ -8,7 +8,7 @@ import { Container } from '@/components/ui/container'
 export default async function NotesPage({
   searchParams,
 }: {
-  searchParams: { archived?: string; search?: string }
+  searchParams: Promise<{ archived?: string; search?: string }>
 }) {
   const session = await getSession()
 
@@ -16,8 +16,9 @@ export default async function NotesPage({
     redirect('/auth/login')
   }
 
-  const showArchived = searchParams.archived === 'true'
-  const searchQuery = searchParams.search || ''
+  const params = await searchParams
+  const showArchived = params.archived === 'true'
+  const searchQuery = params.search || ''
 
   const { data: notes } = showArchived
     ? await getNotes(true)

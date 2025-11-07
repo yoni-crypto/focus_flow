@@ -8,7 +8,7 @@ import { Container } from '@/components/ui/container'
 export default async function TasksPage({
   searchParams,
 }: {
-  searchParams: { date?: string }
+  searchParams: Promise<{ date?: string }>
 }) {
   const session = await getSession()
 
@@ -16,7 +16,8 @@ export default async function TasksPage({
     redirect('/auth/login')
   }
 
-  const selectedDate = searchParams.date || new Date().toISOString().split('T')[0]
+  const params = await searchParams
+  const selectedDate = params.date || new Date().toISOString().split('T')[0]
   const { data: initialTasks } = await getTasks(selectedDate)
 
   return (

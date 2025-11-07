@@ -3,7 +3,7 @@ import { getSession } from '@/app/actions/auth'
 import { LoginForm } from '@/components/auth/login-form'
 
 interface LoginPageProps {
-  searchParams: { registered?: string }
+  searchParams: Promise<{ registered?: string }>
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
@@ -13,7 +13,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     redirect('/dashboard')
   }
 
-  const registered = searchParams.registered === 'true'
+  const params = await searchParams
+  const registered = params.registered === 'true'
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">

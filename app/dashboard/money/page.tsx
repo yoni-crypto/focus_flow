@@ -8,7 +8,7 @@ import { Container } from '@/components/ui/container'
 export default async function MoneyPage({
   searchParams,
 }: {
-  searchParams: { month?: string }
+  searchParams: Promise<{ month?: string }>
 }) {
   const session = await getSession()
 
@@ -16,7 +16,8 @@ export default async function MoneyPage({
     redirect('/auth/login')
   }
 
-  const month = searchParams.month || new Date().toISOString().slice(0, 7)
+  const params = await searchParams
+  const month = params.month || new Date().toISOString().slice(0, 7)
   const { data: entries } = await getMoneyEntries(undefined, month)
   const { data: stats } = await getMoneyStats(month)
 
