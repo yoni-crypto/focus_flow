@@ -36,12 +36,19 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/dashboard')) {
     if (!user) {
       const url = request.nextUrl.clone()
-      url.pathname = '/'
+      url.pathname = '/auth/login'
       return NextResponse.redirect(url)
     }
   }
 
   // Redirect authenticated users away from auth pages
+  if (request.nextUrl.pathname.startsWith('/auth') && user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
+
+  // Redirect authenticated users from home to dashboard
   if (request.nextUrl.pathname === '/' && user) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
