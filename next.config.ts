@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // PWA configuration
+  // Service worker is handled manually via public/sw.js
+  // Manifest is in public/manifest.json
 };
 
 export default nextConfig;
