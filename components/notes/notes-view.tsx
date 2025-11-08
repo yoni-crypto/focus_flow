@@ -44,7 +44,6 @@ export function NotesView({
     setSearchQuery(initialSearch)
   }, [initialNotes, initialArchived, initialSearch])
 
-  // Filter notes based on search and archived status
   const filteredNotes = useMemo(() => {
     let filtered = notes
 
@@ -177,10 +176,8 @@ export function NotesView({
 
       {!showArchived && <NotesSearch onSearch={handleSearch} initialQuery={searchQuery} />}
 
-      {/* Modal for Notes Form */}
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="bg-gray-900/95 border-gray-800 backdrop-blur-xl max-w-2xl p-0 overflow-hidden relative">
-          {/* Background Image */}
           <BackgroundImage src="/images/notes-bg.jpg" alt="Notes background" opacity={20} />
           
           <div className="relative z-10 p-6">

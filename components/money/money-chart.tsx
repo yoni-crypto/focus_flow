@@ -67,7 +67,7 @@ export function MoneyChart({ entries }: MoneyChartProps) {
                 <div key={item.category} className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
                     <span className="font-medium text-white">{item.category}</span>
-                    <span className="text-gray-400">${item.amount.toFixed(2)}</span>
+                    <span className="text-gray-400">ETB {item.amount.toFixed(2)}</span>
                   </div>
                   <div className="h-2 w-full bg-gray-800/50 rounded-full overflow-hidden">
                     <div

@@ -21,13 +21,11 @@ export async function TodayTasks() {
     )
   }
 
-  // Tasks are already sorted by completed status from the query
   const todayTasks = tasks?.filter((task) => !task.completed) || []
   const completedTasks = tasks?.filter((task) => task.completed) || []
 
   return (
     <Card className="bg-gray-900/30 border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
-      {/* Background Image */}
       <BackgroundImage src="/images/tasks-bg.jpg" alt="Tasks background" opacity={20} />
       
       <div className="relative z-10">
@@ -53,8 +51,8 @@ export async function TodayTasks() {
               </Link>
             </div>
           ) : (
-            <div className="space-y-2">
-              {todayTasks.slice(0, 5).map((task) => (
+            <div className="max-h-[400px] overflow-y-auto space-y-2 pr-2">
+              {todayTasks.map((task) => (
                 <div
                   key={task.id}
                   className="flex items-start gap-3 rounded-lg border border-gray-800/50 bg-gray-900/20 p-3 hover:bg-gray-900/40 hover:border-gray-700/50 transition-all duration-200 group"
@@ -75,18 +73,13 @@ export async function TodayTasks() {
                   )}
                 </div>
               ))}
-              {todayTasks.length > 5 && (
-                <p className="text-xs text-gray-500 text-center pt-2">
-                  +{todayTasks.length - 5} more tasks
-                </p>
-              )}
               {completedTasks.length > 0 && (
                 <div className="pt-4 border-t border-gray-800/50">
                   <p className="text-xs text-gray-500 mb-2">
                     Completed ({completedTasks.length})
                   </p>
                   <div className="space-y-1.5">
-                    {completedTasks.slice(0, 2).map((task) => (
+                    {completedTasks.map((task) => (
                       <div
                         key={task.id}
                         className="flex items-center gap-2 text-sm text-gray-500 line-through"

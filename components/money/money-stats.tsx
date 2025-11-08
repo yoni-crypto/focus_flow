@@ -28,7 +28,7 @@ export function MoneyStats({ stats }: MoneyStatsProps) {
             <div className="space-y-1">
               <p className="text-xs text-gray-400">Total Spent</p>
               <p className="text-2xl font-bold text-red-400">
-                ${stats.totalSpent.toFixed(2)}
+                ETB {stats.totalSpent.toFixed(2)}
               </p>
             </div>
           </div>
@@ -45,7 +45,7 @@ export function MoneyStats({ stats }: MoneyStatsProps) {
             <div className="space-y-1">
               <p className="text-xs text-gray-400">Total Saved</p>
               <p className="text-2xl font-bold text-green-400">
-                ${stats.totalSaved.toFixed(2)}
+                ETB {stats.totalSaved.toFixed(2)}
               </p>
             </div>
           </div>
@@ -74,7 +74,7 @@ export function MoneyStats({ stats }: MoneyStatsProps) {
                   "text-2xl font-bold",
                   isPositive ? "text-green-400" : "text-red-400"
                 )}>
-                  ${Math.abs(stats.net).toFixed(2)}
+                  ETB {Math.abs(stats.net).toFixed(2)}
                 </p>
               </div>
             </div>

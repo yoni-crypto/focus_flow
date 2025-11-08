@@ -13,9 +13,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-black flex items-center">
       <div className="w-full">
-        {/* Hero Section */}
         <div className="relative min-h-screen flex items-center justify-center">
-          {/* Background Image */}
           <div 
             className="absolute inset-0"
             style={{
@@ -28,10 +26,8 @@ export default async function HomePage() {
             <div className="absolute inset-0 bg-black/80" />
           </div>
 
-          {/* Content */}
           <div className="relative z-10 w-full max-w-5xl mx-auto px-6 lg:px-8">
             <div className="text-center space-y-10">
-              {/* Brand */}
               <div className="space-y-6">
                 <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight">
                   Focus Flow
@@ -41,7 +37,6 @@ export default async function HomePage() {
                 </p>
               </div>
 
-              {/* Actions */}
               <div className="flex items-center justify-center gap-4 pt-4">
                 <Link href="/auth/register">
                   <Button 

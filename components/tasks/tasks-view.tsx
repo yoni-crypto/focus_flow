@@ -33,12 +33,10 @@ export function TasksView({ initialTasks, initialDate }: TasksViewProps) {
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all')
   const [priorityFilter, setPriorityFilter] = useState<'all' | 'low' | 'medium' | 'high'>('all')
 
-  // Sync tasks with props when they change
   useEffect(() => {
     setTasks(initialTasks)
   }, [initialTasks])
 
-  // Sync date with props when it changes
   useEffect(() => {
     setSelectedDate(initialDate)
   }, [initialDate])
@@ -138,10 +136,8 @@ export function TasksView({ initialTasks, initialDate }: TasksViewProps) {
         onPriorityFilterChange={setPriorityFilter}
       />
 
-      {/* Modal for Task Form */}
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="bg-gray-900/95 border-gray-800 backdrop-blur-xl max-w-md p-0 overflow-hidden relative">
-          {/* Background Image */}
           <BackgroundImage src="/images/tasks-bg.jpg" alt="Tasks background" opacity={20} />
           
           <div className="relative z-10 p-6">

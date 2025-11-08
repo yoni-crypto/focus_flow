@@ -23,14 +23,12 @@ export function FocusTimer() {
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [sessionStartTime, setSessionStartTime] = useState<Date | null>(null)
 
-  // Format time display
   const formatTime = (totalSeconds: number) => {
     const mins = Math.floor(totalSeconds / 60)
     const secs = totalSeconds % 60
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
   }
 
-  // Timer logic
   useEffect(() => {
     if (!isRunning || seconds === 0) return
 
@@ -48,10 +46,8 @@ export function FocusTimer() {
     return () => clearInterval(interval)
   }, [isRunning, seconds])
 
-  // Start timer
   const handleStart = useCallback(async () => {
     if (!isRunning && sessionId === null) {
-      // Create new session
       const startTime = new Date()
       const { data, error } = await createFocusSession({
         start: startTime.toISOString(),
@@ -67,17 +63,14 @@ export function FocusTimer() {
     setIsRunning(true)
   }, [isRunning, sessionId])
 
-  // Pause timer
   const handlePause = useCallback(() => {
     setIsRunning(false)
   }, [])
 
-  // Reset timer
   const handleReset = useCallback(async () => {
     setIsRunning(false)
     setSeconds(getDurationForMode(mode))
 
-    // If there's an active session, cancel it
     if (sessionId) {
       await updateFocusSession(sessionId, {
         end_time: new Date().toISOString(),
@@ -88,9 +81,7 @@ export function FocusTimer() {
     }
   }, [mode, sessionId])
 
-  // Switch mode
   const switchMode = useCallback(async (newMode: TimerMode) => {
-    // Save current session if running
     if (sessionId && sessionStartTime) {
       const duration = Math.floor(
         (new Date().getTime() - sessionStartTime.getTime()) / (1000 * 60)
@@ -109,7 +100,6 @@ export function FocusTimer() {
     setSessionStartTime(null)
   }, [sessionId, sessionStartTime, router])
 
-  // Timer complete
   const handleTimerComplete = useCallback(async () => {
     if (sessionId && sessionStartTime) {
       const duration = Math.floor(
@@ -122,13 +112,11 @@ export function FocusTimer() {
       router.refresh()
     }
 
-    // Auto-switch to break after focus
     if (mode === 'focus') {
       setTimeout(() => {
         switchMode('shortBreak')
       }, 1000)
     } else {
-      // Return to focus after break
       setTimeout(() => {
         switchMode('focus')
       }, 1000)
@@ -157,12 +145,10 @@ export function FocusTimer() {
 
   return (
     <Card className="bg-gray-900/30 border-gray-800/50 backdrop-blur-sm relative overflow-hidden min-h-[600px]">
-      {/* Background Image */}
       <BackgroundImage src="/images/focus-bg.jpg" alt="Focus background" opacity={15} />
       
       <div className="relative z-10 p-8 lg:p-12">
         <div className="flex flex-col items-center justify-center space-y-8">
-          {/* Mode Selector */}
           <div className="flex gap-2 rounded-xl border border-gray-800/50 bg-gray-900/30 p-1.5 backdrop-blur-sm">
             <Button
               variant={mode === 'focus' ? 'default' : 'ghost'}
@@ -209,7 +195,6 @@ export function FocusTimer() {
             </Button>
           </div>
 
-          {/* Timer Display */}
           <div className="flex flex-col items-center justify-center space-y-6 w-full">
             <div className={cn(
               'text-8xl md:text-9xl font-bold tracking-tight font-mono text-white',
@@ -224,7 +209,6 @@ export function FocusTimer() {
                 {mode === 'focus' ? 'Focus Time' : mode === 'shortBreak' ? 'Short Break' : 'Long Break'}
               </p>
               
-              {/* Progress Bar */}
               {progress > 0 && (
                 <div className="space-y-2">
                   <div className="h-2 w-full bg-gray-800/50 rounded-full overflow-hidden backdrop-blur-sm">
@@ -246,7 +230,6 @@ export function FocusTimer() {
             </div>
           </div>
 
-          {/* Controls */}
           <div className="flex gap-3 pt-4">
             {!isRunning ? (
               <Button

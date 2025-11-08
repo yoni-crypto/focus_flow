@@ -21,14 +21,11 @@ export default async function NotesPage({
 
   const { data: notes } = showArchived
     ? await getNotes(true)
-    : searchQuery
-    ? await getNotes(false) // We'll filter by search in the component
     : await getNotes(false)
 
   return (
     <AuthGuard>
       <div className="min-h-screen bg-black">
-        {/* Clean Header */}
         <div className="border-b border-gray-800/50 bg-black sticky top-0 z-10">
           <div className="px-6 py-5">
             <div className="flex items-center h-full">
@@ -39,7 +36,6 @@ export default async function NotesPage({
           </div>
         </div>
 
-        {/* Content */}
         <div className="px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-24 md:pb-8">
           <NotesView
             initialNotes={notes || []}

@@ -43,7 +43,6 @@ export function TaskItem({
     await onDelete(task.id)
   }
 
-  // Touch swipe handlers for mobile
   function handleTouchStart(e: React.TouchEvent) {
     setTouchStart(e.touches[0].clientX)
     setIsSwiping(true)
@@ -55,7 +54,6 @@ export function TaskItem({
     const currentX = e.touches[0].clientX
     const diff = currentX - touchStart
 
-    // Only allow swiping left (negative)
     if (diff < 0) {
       setSwipeOffset(Math.max(diff, -80))
     }
@@ -64,16 +62,13 @@ export function TaskItem({
   function handleTouchEnd() {
     setIsSwiping(false)
 
-    // If swiped more than 50px, show delete action
     if (swipeOffset < -50) {
       handleDelete()
     }
 
-    // Reset swipe position
     setSwipeOffset(0)
   }
 
-  // Drag handlers for desktop
   function handleDragStart(e: React.DragEvent) {
     onDragStart()
     e.dataTransfer.effectAllowed = 'move'
@@ -102,12 +97,10 @@ export function TaskItem({
       onDragEnd={handleDragEnd}
     >
       <div className="flex items-center gap-3 p-4">
-        {/* Drag handle (desktop) */}
         <div className="hidden md:block cursor-move text-gray-500 hover:text-gray-300 transition-colors">
           <GripVertical className="h-4 w-4" />
         </div>
 
-        {/* Checkbox */}
         <button
           onClick={handleToggleComplete}
           className="shrink-0 focus:outline-none focus:ring-2 focus:ring-gray-700 rounded transition-colors"
@@ -120,7 +113,6 @@ export function TaskItem({
           )}
         </button>
 
-        {/* Task content */}
         <div className="flex-1 min-w-0">
           <p
             className={cn(
@@ -135,7 +127,6 @@ export function TaskItem({
           )}
         </div>
 
-        {/* Priority badge */}
         {task.priority !== 'medium' && (
           <span
             className={cn(
@@ -147,7 +138,6 @@ export function TaskItem({
           </span>
         )}
 
-        {/* Delete button (desktop) */}
         <Button
           variant="ghost"
           size="icon"
@@ -158,7 +148,6 @@ export function TaskItem({
         </Button>
       </div>
 
-      {/* Swipe delete indicator (mobile) */}
       {swipeOffset < -30 && (
         <div className="absolute right-0 top-0 bottom-0 flex items-center justify-end pr-4 bg-red-500/10">
           <Trash2 className="h-5 w-5 text-red-400" />

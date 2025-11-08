@@ -36,7 +36,6 @@ export function NoteCard({
       )}
       onClick={onEdit}
     >
-      {/* Background Image */}
       <BackgroundImage src="/images/notes-bg.jpg" alt="Notes background" opacity={15} />
       
       <CardContent className="p-4 relative z-10">

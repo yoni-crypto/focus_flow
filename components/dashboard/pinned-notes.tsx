@@ -44,7 +44,6 @@ export async function PinnedNotes() {
 
   return (
     <Card className="bg-gray-900/30 border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
-      {/* Background Image */}
       <BackgroundImage src="/images/notes-bg.jpg" alt="Notes background" opacity={20} />
       
       <div className="relative z-10">
@@ -58,8 +57,9 @@ export async function PinnedNotes() {
           </Link>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-            {notes.map((note) => (
+          <div className="max-h-[400px] overflow-y-auto pr-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+              {notes.map((note) => (
               <Link
                 key={note.id}
                 href="/dashboard/notes"
@@ -77,7 +77,8 @@ export async function PinnedNotes() {
                   </div>
                 </div>
               </Link>
-            ))}
+              ))}
+            </div>
           </div>
         </CardContent>
       </div>

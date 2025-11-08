@@ -23,7 +23,6 @@ export default async function MoneyPage({
   return (
     <AuthGuard>
       <div className="min-h-screen bg-black">
-        {/* Clean Header */}
         <div className="border-b border-gray-800/50 bg-black sticky top-0 z-10">
           <div className="px-6 py-5">
             <div className="flex items-center h-full">
@@ -34,7 +33,6 @@ export default async function MoneyPage({
           </div>
         </div>
 
-        {/* Content */}
         <div className="px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-24 md:pb-8">
           <MoneyTracker
             initialEntries={entries || []}

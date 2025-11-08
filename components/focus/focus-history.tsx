@@ -31,7 +31,7 @@ export async function FocusHistory() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
+        <div className="max-h-[400px] overflow-y-auto space-y-2 pr-2">
           {sessions.map((session) => {
             const sessionDate = new Date(session.created_at)
             const isToday = sessionDate.toDateString() === new Date().toDateString()

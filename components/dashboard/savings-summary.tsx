@@ -25,7 +25,6 @@ export async function SavingsSummary() {
 
   return (
     <Card className="bg-gray-900/30 border-gray-800/50 backdrop-blur-sm relative overflow-hidden">
-      {/* Background Image */}
       <BackgroundImage src="/images/savings-bg.jpg" alt="Savings background" opacity={20} />
       
       <div className="relative z-10">
@@ -52,7 +51,7 @@ export async function SavingsSummary() {
                   <Wallet className="h-5 w-5 text-white" />
                 </div>
                 <span className="text-3xl font-bold text-white">
-                  ${Math.abs(net).toFixed(2)}
+                  ETB {Math.abs(net).toFixed(2)}
                 </span>
                 {isPositive ? (
                   <TrendingUp className="h-5 w-5 text-green-500" />
@@ -72,7 +71,7 @@ export async function SavingsSummary() {
                   <p className="text-xs text-gray-400">Saved</p>
                 </div>
                 <p className="text-xl font-bold text-green-400">
-                  ${stats.totalSaved.toFixed(2)}
+                  ETB {stats.totalSaved.toFixed(2)}
                 </p>
               </div>
               <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 backdrop-blur-sm">
@@ -81,7 +80,7 @@ export async function SavingsSummary() {
                   <p className="text-xs text-gray-400">Spent</p>
                 </div>
                 <p className="text-xl font-bold text-red-400">
-                  ${stats.totalSpent.toFixed(2)}
+                  ETB {stats.totalSpent.toFixed(2)}
                 </p>
               </div>
             </div>

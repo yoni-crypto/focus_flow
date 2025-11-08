@@ -69,8 +69,8 @@ export function MoneyEntries({ entries, onUpdate, onDelete }: MoneyEntriesProps)
             <CardTitle className="text-lg font-semibold text-white">Recent Entries</CardTitle>
           </CardHeader>
           <CardContent>
-          <div className="space-y-2">
-            {sortedEntries.slice(0, 10).map((entry) => (
+          <div className="max-h-[500px] overflow-y-auto space-y-2 pr-2">
+            {sortedEntries.map((entry) => (
               <div
                 key={entry.id}
                 className="flex items-center justify-between rounded-lg border border-gray-800/50 bg-gray-900/20 p-3 hover:bg-gray-900/40 hover:border-gray-700/50 transition-all duration-200 group"
@@ -82,7 +82,7 @@ export function MoneyEntries({ entries, onUpdate, onDelete }: MoneyEntriesProps)
                         entry.type === 'spend' ? 'text-red-400' : 'text-green-400'
                       }`}
                     >
-                      {entry.type === 'spend' ? '-' : '+'}${Number(entry.amount).toFixed(2)}
+                      {entry.type === 'spend' ? '-' : '+'}ETB {Number(entry.amount).toFixed(2)}
                     </span>
                     {entry.category && (
                       <span className="text-xs text-gray-400 bg-gray-800/50 px-2 py-0.5 rounded border border-gray-700/50">
@@ -118,17 +118,11 @@ export function MoneyEntries({ entries, onUpdate, onDelete }: MoneyEntriesProps)
                 </div>
               </div>
             ))}
-            {sortedEntries.length > 10 && (
-              <p className="text-xs text-gray-500 text-center pt-2">
-                +{sortedEntries.length - 10} more entries
-              </p>
-            )}
           </div>
         </CardContent>
         </div>
       </Card>
 
-      {/* Edit Modal */}
       {editingId && (
         <Dialog open={!!editingId} onOpenChange={(open) => !open && setEditingId(null)}>
           <DialogContent className="bg-gray-900/95 border-gray-800 backdrop-blur-xl max-w-md p-0 overflow-hidden relative">
